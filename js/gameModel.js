@@ -1,12 +1,22 @@
 'use strict';
 
 const DELIMITER = '-';
-
+/**
+ * Class representing the game model
+ */
 class GameModel extends Dispatcher {
+    /**
+     * Create game model
+     * @param options
+     */
     constructor(options) {
         super(options);
     }
 
+    /**
+     * Start new game with provideed oprions
+     * @param gameOptions
+     */
     start(gameOptions) {
         this._openedCells = {}; //make object for easy access by index ('2-3');
         this._markedCells = {};
@@ -26,6 +36,11 @@ class GameModel extends Dispatcher {
         //this._onStateChange(this._state);
     }
 
+    /**
+     * Mark cell (has mine/has no mine)
+     * @param row
+     * @param column
+     */
     markCell(row, column) {
         if (this._openedCells[row + DELIMITER + column]) {
             return;
@@ -36,6 +51,11 @@ class GameModel extends Dispatcher {
         this._checkGameState();
     }
 
+    /**
+     * Trt to pen cell and check its "content"
+     * @param row
+     * @param column
+     */
     openCell(row, column) {
         let cell = this._checkAndOpenCell(row, column);
 
@@ -52,7 +72,7 @@ class GameModel extends Dispatcher {
                     this.openCell(neighbourRow, neighbourColumn);
                 });
                 break;
-            case CellType.MINE:
+            case CellType.MINE: // Cell has mine - game is over
                 this.setState(GameState.LOST);
                 this._openAll();
                 break;
@@ -61,6 +81,14 @@ class GameModel extends Dispatcher {
         this._checkGameState();
     }
 
+    /**
+     * Open cell only it is available
+     * @param row
+     * @param column
+     * @param {boolean} force - open anyway (when game is over)
+     * @returns {*}
+     * @private
+     */
     _checkAndOpenCell(row, column, force) {
         let cellOpened = this._openedCells[row + DELIMITER + column];
         let cellMarked = this._markedCells[row + DELIMITER + column];
@@ -90,6 +118,10 @@ class GameModel extends Dispatcher {
         }
     }
 
+    /**
+     * Open all cells (when game is over)
+     * @private
+     */
     _openAll() {
         for (let i = 0; i < this._field.rows; i++) {
             for (let j = 0; j < this._field.columns; j++) {

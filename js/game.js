@@ -2,9 +2,14 @@
 
 var Game = (function() {
     let fieldTemplate = document.getElementById('field-template').innerHTML;
-
+    /**
+     * Class representing the main game manager
+     */
     class Game {
-
+        /**
+         * Create game controller
+         * @param options
+         */
         constructor(options) {
             this._el = options.element;
             this._fieldWrapper = this._el.querySelector('[data-component="field"]');
@@ -31,6 +36,10 @@ var Game = (function() {
             })
         }
 
+        /**
+         * Start new game with provided options
+         * @param options
+         */
         start(options) {
             this._renderField(options);
             this._addListeners();
@@ -39,27 +48,50 @@ var Game = (function() {
             this._timer.reset();
         }
 
+        /**
+         * Handle start event from controls panel
+         * @param {CustomEvent} event
+         * @private
+         */
         _onStart(event) {
             let options = event.detail;
 
             this.start(options);
         }
 
+        /**
+         * Render new game field
+         * @param options
+         * @private
+         */
         _renderField(options) {
             this._fieldWrapper.innerHTML = this._fieldTemplate(options);//fieldHTML;
             this._fieldEl = this._fieldWrapper.querySelector('table');
         }
 
+        /**
+         * Add listeners to user interaction
+         * @private
+         */
         _addListeners() {
             this._fieldEl.onclick = this._onFieldLeftClick.bind(this);
             this._fieldEl.oncontextmenu = this._onFieldRightClick.bind(this);
         }
 
+        /**
+         * Remove listeners to prevent interaction when game is over
+         * @private
+         */
         _removeListeners() {
             this._fieldEl.onclick = null;
             this._fieldEl.oncontextmenu = null;
         }
 
+        /**
+         * User clicks left mouse button
+         * @param {MouseEvent} event
+         * @private
+         */
         _onFieldLeftClick(event) {
             let targetCell = this._getClickedCell(event);
 
@@ -69,6 +101,11 @@ var Game = (function() {
             }
         }
 
+        /**
+         * User clicks left mouse button
+         * @param {MouseEvent} event
+         * @private
+         */
         _onFieldRightClick(event) {
             let targetCell = this._getClickedCell(event);
 
@@ -80,6 +117,10 @@ var Game = (function() {
             return false;
         }
 
+        /**
+         * Check if the click is the first for this new game
+         * @private
+         */
         _checkFirstClick() {
             if (!this._firstClick) {
                 this._firstClick = true;
@@ -93,6 +134,11 @@ var Game = (function() {
             return target.closest('td');
         }
 
+        /**
+         * Handle cell opening and update the cell view state
+         * @param {CustomEvent} event
+         * @private
+         */
         _onCellOpen(event) {
             let cell = event.detail;
             let cellType = cell.type;
@@ -110,7 +156,11 @@ var Game = (function() {
                     cellEl.innerHTML = cellType;
             }
         }
-
+        /**
+         * Handle cell toggling and update the cell view state (place/remove flag)
+         * @param {CustomEvent} event
+         * @private
+         */
         _onCellToggle(event) {
             let cell = event.detail;
             let cellEl = this._fieldEl.rows[cell.row].cells[cell.column];
@@ -129,6 +179,11 @@ var Game = (function() {
             }
         }
 
+        /**
+         * Game is over - show message, clear game data and remove listeners
+         * @param state
+         * @private
+         */
         _end(state) {
             let isWin = (state === GameState.WIN);
 

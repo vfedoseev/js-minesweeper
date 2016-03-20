@@ -1,9 +1,16 @@
 'use strict';
 
+/**
+ * Object representing the storage interface
+ */
 var Results = (function() {
     let template = _.template(document.getElementById('results-template').innerHTML);
     let storageName = '_minesweeper_data_';
 
+    /**
+     * Get collected data for previous games from localStorage
+     * @private
+     */
     function _getFromStorage() {
         let results = window.localStorage.getItem(storageName);
 
@@ -12,6 +19,10 @@ var Results = (function() {
         return results;
     }
 
+    /**
+     * Save new result (seconds)
+     * @param result
+     */
     function _save(result) {
         let results = _getFromStorage();
         let resultToSave = {
@@ -23,6 +34,10 @@ var Results = (function() {
         window.localStorage.setItem(storageName, JSON.stringify(results));
     }
 
+    /**
+     * Render current data from storage to simple table
+     * @returns {string} table HTML
+     */
     function _render() {
         let results = _getFromStorage();
         let totalResults = results.length;

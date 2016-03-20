@@ -2,8 +2,14 @@
 
 var Controls = (function() {
     var controlsTemplate = document.getElementById('controls-template').innerHTML;
-
+    /**
+     * Class representing the control panel
+     */
     class Controls extends Dispatcher {
+        /**
+         * Create controls
+         * @param options
+         */
         constructor(options) {
             super(options);
 
@@ -13,6 +19,10 @@ var Controls = (function() {
             this._addListeners();
         }
 
+        /**
+         * Render controls from template
+         * @private
+         */
         _render() {
             let defaultOptions = {
                 minRows: Default.MIN_ROWS,
@@ -31,12 +41,21 @@ var Controls = (function() {
             });
         }
 
+        /**
+         * Add main listeners for click (start game), timer update, and options input change
+         * @private
+         */
         _addListeners() {
             this._el.addEventListener('click', this._onClick.bind(this));
             this._el.addEventListener('change', this._onChange.bind(this));
             this._timer.addEventListener('timeUpdate', this._onTimerUpdate.bind(this));
         }
 
+        /**
+         * 'Click' event handler
+         * @param {MouseEvent} event - click event
+         * @private
+         */
         _onClick(event) {
             var startBtn = event.target.closest('[data-action="start"]');
 
@@ -45,12 +64,22 @@ var Controls = (function() {
             }
             this._onStartClick();
         }
+
+        /**
+         * Implement start - dispatch 'start' event with current options
+         * @private
+         */
         _onStartClick() {
             let options = this._getOptions();
 
             this.dispatchEvent('start', options);
         }
 
+        /**
+         * 'Change' event hadler
+         * @param {Event} event - change event
+         * @private
+         */
         _onChange(event) {
             let optionsForm = event.target.closest('[name="options-form"]');
 
@@ -61,6 +90,10 @@ var Controls = (function() {
             this._validateOptions();
         }
 
+        /**
+         * Validate current options
+         * @private
+         */
         _validateOptions() {
             let options = this._getOptions();
             //Check if input is not valid number
@@ -88,6 +121,11 @@ var Controls = (function() {
             this._setOptions(options);
         }
 
+        /**
+         * Get options from DOM
+         * @returns {{rows: Number, columns: Number, mines: Number}}
+         * @private
+         */
         _getOptions() {
             let rows = parseInt(this._el.querySelector('[name="rows"]').value);
             let columns = parseInt(this._el.querySelector('[name="columns"]').value);
@@ -100,6 +138,11 @@ var Controls = (function() {
             }
         }
 
+        /**
+         * Set options to DOM
+         * @param options
+         * @private
+         */
         _setOptions(options) {
             this._el.querySelector('[name="rows"]').value = options.rows;
             this._el.querySelector('[name="columns"]').value = options.columns;
@@ -110,6 +153,11 @@ var Controls = (function() {
             return Math.round(rows*columns/2);
         }
 
+        /**
+         * Render new timer value
+         * @param {CustomEvent} event
+         * @private
+         */
         _onTimerUpdate(event) {
             let time = event.detail;
             let min = Math.floor(time / 60);
