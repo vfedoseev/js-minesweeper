@@ -10,12 +10,16 @@ html, body {
     font: 14px Arial, Helvetica, sans-serif;
     color: #333;
 }
-
+.wrapper {
+    display: block;
+    text-align: center;
+}
 .game-wrapper {
     position: relative;
     display: inline-block;
     background: #2D95BF;
     border: 3px solid #2D95BF;
+    text-align: left;
 }
 
 .controls-wrapper {
@@ -44,17 +48,18 @@ html, body {
     position: relative;
     margin: 0;
     display: block;
-    padding-left: 80px;
+    padding-left: 90px;
     line-height: 25px;
 }
 .control-name {
     position: absolute;
-    width: 80px;
+    width: 90px;
     left: 0;
     top: 0;
+    font-size: 12px;
 }
 .control-input {
-    width: 45px;
+    width: 50px;
     padding: 3px 5px;
     background: #f8f8f8;
     border: 1px solid #eee;
@@ -62,7 +67,7 @@ html, body {
 
 .start-btn {
     position: absolute;
-    left: 50%;
+    left: 60%;
     top: 50%;
     padding: 5px 10px;
     border-radius: 3px;

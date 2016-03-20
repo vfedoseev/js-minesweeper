@@ -46,7 +46,7 @@ var Modal = (function() {
         }
 
         _onCloseClick(event) {
-            let closeBtn = event.target.closest('.js-close');
+            let closeBtn = event.target.closest('[data-action="close"]');
 
             if (closeBtn) {
                 this.hide();
