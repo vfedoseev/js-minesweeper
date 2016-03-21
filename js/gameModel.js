@@ -105,15 +105,14 @@ class GameModel extends Dispatcher {
     }
 
     _checkGameState() {
-        //Get number of opened cells and number of marked cells
+        //Get number of opened cells and number of cells with mines
         let openedCells = Object.keys(this._openedCells).length;
-        //TODO - check only true marked cells and if all marked cells are correct (equal total mines)
-        let markedCells = Object.keys(this._markedCells).filter((key)=>this._markedCells[key]).length;
+        let totalMines = this._field.mines;
         let totalCells = this._field.rows * this._field.columns;
 
-        // All cells are marked or opened and number of marked cells equal to total mines.
-        // We don't have excess marks
-        if (openedCells + markedCells === totalCells && markedCells === this._field.mines) {
+        // All "safe" cells are opened
+        if (openedCells + totalMines === totalCells) {
+            this._openAll();
             this.setState(GameState.WIN);
         }
     }
