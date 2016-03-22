@@ -14,9 +14,7 @@ var Results = (function() {
     function _getFromStorage() {
         let results = window.localStorage.getItem(storageName);
 
-        results = results ? JSON.parse(results) : [];
-
-        return results;
+        return results ? JSON.parse(results) : [];
     }
 
     /**

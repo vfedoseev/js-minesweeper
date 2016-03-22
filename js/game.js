@@ -146,13 +146,13 @@ var Game = (function() {
 
             switch (cellType) {
                 case CellType.EMPTY:
-                    cellEl.classList.add('cell-empty');
+                    cellEl.classList.add(Classes.EMPTY);
                     break;
                 case CellType.MINE:
-                    cellEl.classList.add('cell-mine');
+                    cellEl.classList.add(Classes.MINE);
                     break;
                 default:
-                    cellEl.classList.add('cell-number');
+                    cellEl.classList.add(Classes.NUMBER);
                     cellEl.innerHTML = cellType;
             }
         }
@@ -165,7 +165,7 @@ var Game = (function() {
             let cell = event.detail;
             let cellEl = this._fieldEl.rows[cell.row].cells[cell.column];
 
-            cellEl.classList.toggle('cell-marked');
+            cellEl.classList.toggle(Classes.MARKED);
         }
 
         _onGameStateChange(event) {

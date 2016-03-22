@@ -39,6 +39,11 @@ var Controls = (function() {
             this._el.innerHTML = _.template(controlsTemplate)({
                 options: defaultOptions
             });
+
+            this._rowsInput = this._el.querySelector(Selectors.ROWS_INPUT);
+            this._columnsInput = this._el.querySelector(Selectors.COLUMNS_INPUT);
+            this._minesInput = this._el.querySelector(Selectors.MINES_INPUT);
+            this._minesRangeText = this._el.querySelector(Selectors.MINES_RANGE_TEXT);
         }
 
         /**
@@ -62,14 +67,14 @@ var Controls = (function() {
             if (!startBtn) {
                 return
             }
-            this._onStartClick();
+            this._triggerStart();
         }
 
         /**
          * Implement start - dispatch 'start' event with current options
          * @private
          */
-        _onStartClick() {
+        _triggerStart() {
             let options = this._getOptions();
 
             this.dispatchEvent('start', options);
@@ -114,9 +119,9 @@ var Controls = (function() {
             let maxMines = this._getMinesMaxRange(options.rows, options.columns);
             options.mines = Math.max(Default.MIN_MINES, Math.min(options.mines, maxMines));
             //Set mines range
-            this._el.querySelector('[data-range="mines"]').textContent = `(${Default.MIN_MINES}-${maxMines})`;
-            this._el.querySelector('[name="mines"]').max = Default.MIN_MINES;
-            this._el.querySelector('[name="mines"]').max = maxMines;
+            this._minesRangeText.textContent = `(${Default.MIN_MINES}-${maxMines})`;
+            this._minesInput.max = Default.MIN_MINES;
+            this._minesInput.max = maxMines;
 
             this._setOptions(options);
         }
@@ -127,14 +132,10 @@ var Controls = (function() {
          * @private
          */
         _getOptions() {
-            let rows = parseInt(this._el.querySelector('[name="rows"]').value);
-            let columns = parseInt(this._el.querySelector('[name="columns"]').value);
-            let mines = parseInt(this._el.querySelector('[name="mines"]').value);
-
             return {
-                rows: rows,
-                columns: columns,
-                mines: mines
+                rows: parseInt(this._rowsInput.value),
+                columns: parseInt(this._columnsInput.value),
+                mines: parseInt(this._minesInput.value)
             }
         }
 
@@ -144,13 +145,13 @@ var Controls = (function() {
          * @private
          */
         _setOptions(options) {
-            this._el.querySelector('[name="rows"]').value = options.rows;
-            this._el.querySelector('[name="columns"]').value = options.columns;
-            this._el.querySelector('[name="mines"]').value = options.mines;
+            this._rowsInput.value = options.rows;
+            this._columnsInput.value = options.columns;
+            this._minesInput.value = options.mines;
         }
 
         _getMinesMaxRange(rows, columns) {
-            return Math.round(rows*columns/2);
+            return Math.round(rows * columns / 2);
         }
 
         /**
@@ -163,11 +164,16 @@ var Controls = (function() {
             let min = Math.floor(time / 60);
             let sec = time % 60;
 
-            function twoDigits(n) {
-                return (n < 10 ? '0' : '') + n;
-            }
+            this._timerEl.textContent = `${this._twoDigits(min)}:${this._twoDigits(sec)}`;
+        }
 
-            this._timerEl.textContent = `${twoDigits(min)}:${twoDigits(sec)}`;
+        /**
+         * Convert n to two-digit string
+         * @param {Number} n
+         * @private
+         */
+        _twoDigits(n) {
+            return ('0' + n).slice(-2);
         }
     }
 
