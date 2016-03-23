@@ -41,6 +41,7 @@ var Modal = (function() {
                 this._el.querySelector('.modal').classList.remove('js-modal-hidden');
             },20);
             this._el.addEventListener('click', this._onCloseClick.bind(this));
+            this._el.addEventListener('contextmenu', this._onContextMenu.bind(this));
 
             return this._el;
         }
@@ -51,6 +52,13 @@ var Modal = (function() {
             if (closeBtn) {
                 this.hide();
             }
+        }
+
+        /**
+         * Prevent context menu on modal
+         */
+        _onContextMenu(event) {
+            event.preventDefault();
         }
     }
 

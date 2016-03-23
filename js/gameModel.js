@@ -20,6 +20,7 @@ class GameModel extends Dispatcher {
     start(gameOptions) {
         this._openedCells = {}; //make object for easy access by index ('2-3');
         this._markedCells = {};
+        this._highlightedCells = {};
         this._field = new FieldModel(gameOptions);
         this._field.generate();
         this.setState(GameState.START);
@@ -73,14 +74,76 @@ class GameModel extends Dispatcher {
                 });
                 break;
             case CellType.MINE: // Cell has mine - game is over
-                this.setState(GameState.LOST);
                 this._openAll();
+                this.setState(GameState.LOST);
                 break;
         }
 
         this._checkGameState();
     }
 
+    /**
+     * Hightlight all cells neighbours if the cell has number and it eual to number of marked neighbours
+     * @param row
+     * @param column
+     */
+    highlightCell(row, column) {
+        let cellType = this._field.getCellType(row, column);
+        let cellIsOpened = this._openedCells[row + DELIMITER + column];
+        if (!cellIsOpened && cellType > 0) {
+            return;
+        }
+        let neighbours = this._field.getNeighbours(row, column);
+        let markedNeighbours = neighbours.filter((neighbourCell) => {
+            return this._markedCells[neighbourCell.row + DELIMITER + neighbourCell.column];
+        }).length;
+
+        if (markedNeighbours !== cellType) {
+            return;
+        }
+        neighbours.forEach((neighbourCell) => { //we don't have to check mine because empty neighbours are not mines
+            let neighbourRow = neighbourCell.row;
+            let neighbourColumn = neighbourCell.column;
+            let neighbourIsOpened = this._openedCells[neighbourRow + DELIMITER + neighbourColumn];
+            let neighbourIsMarked = this._markedCells[neighbourRow + DELIMITER + neighbourColumn];
+
+            if (!neighbourIsOpened && !neighbourIsMarked) {
+                this._highlightedCells[neighbourRow + DELIMITER + neighbourColumn] = true;
+                this.dispatchEvent('cellHighlight', neighbourCell);
+            }
+        });
+    }
+
+    /**
+     * Open all cell, that are currently highlighted (by pressing two buttons on mumber cell)
+     */
+    openHighlighted() {
+        for (let i = 0; i < this._field.rows; i++) {
+            for (let j = 0; j < this._field.columns; j++) {
+                if (!this._highlightedCells[i + DELIMITER + j]) {
+                    continue;
+                }
+                this.openCell(i, j);
+            }
+        }
+    }
+
+    /**
+     * Clear highlight for all cells
+     */
+    clearHighlight() {
+        for (let i = 0; i < this._field.rows; i++) {
+            for (let j = 0; j < this._field.columns; j++) {
+                if (!this._highlightedCells[i + DELIMITER + j]) {
+                    continue;
+                }
+                let cell = this._field.getCell(i, j);
+
+                this._highlightedCells[i + DELIMITER + j] = false;
+                this.dispatchEvent('cellClearHighlight', cell);
+            }
+        }
+    }
     /**
      * Open cell only it is available
      * @param row

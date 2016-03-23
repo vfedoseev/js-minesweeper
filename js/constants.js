@@ -34,5 +34,6 @@ const Classes = {
     EMPTY: 'cell-empty',
     MINE: 'cell-mine',
     NUMBER: 'cell-number',
-    MARKED: 'cell-marked'
+    MARKED: 'cell-marked',
+    HIGHLIGHT: 'cell-highlight'
 }

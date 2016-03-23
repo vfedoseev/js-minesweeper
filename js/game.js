@@ -15,10 +15,20 @@ var Game = (function() {
             this._fieldWrapper = this._el.querySelector('[data-component="field"]');
             this._fieldTemplate = _.template(fieldTemplate);
 
+            //Bind listeners
+            this._onFieldLeftClick = this._onFieldLeftClick.bind(this);
+            this._onFieldRightClick = this._onFieldRightClick.bind(this);
+            this._onMouseDown = this._onMouseDown.bind(this);
+            this._onMouseUp = this._onMouseUp.bind(this);
+            //Current click - collect data about simultaneous click
+            this._currentClick = {};
+
             this._gameModel = new GameModel();
             this._gameModel.addEventListener('stateChange', this._onGameStateChange.bind(this));
             this._gameModel.addEventListener('cellOpen', this._onCellOpen.bind(this));
             this._gameModel.addEventListener('cellToggle', this._onCellToggle.bind(this));
+            this._gameModel.addEventListener('cellHighlight', this._onCellHighlight.bind(this));
+            this._gameModel.addEventListener('cellClearHighlight', this._onCellClearHighlight.bind(this));
 
             this._timer = new Timer();
 
@@ -33,7 +43,7 @@ var Game = (function() {
                 rows: Default.ROWS,
                 columns: Default.COLUMNS,
                 mines: Default.MINES
-            })
+            });
         }
 
         /**
@@ -74,8 +84,10 @@ var Game = (function() {
          * @private
          */
         _addListeners() {
-            this._fieldEl.onclick = this._onFieldLeftClick.bind(this);
-            this._fieldEl.oncontextmenu = this._onFieldRightClick.bind(this);
+            this._fieldEl.addEventListener('click', this._onFieldLeftClick);
+            this._fieldEl.addEventListener('contextmenu', this._onFieldRightClick);
+            this._fieldEl.addEventListener('mousedown', this._onMouseDown.bind(this));
+            document.addEventListener('mouseup', this._onMouseUp.bind(this));
         }
 
         /**
@@ -83,8 +95,10 @@ var Game = (function() {
          * @private
          */
         _removeListeners() {
-            this._fieldEl.onclick = null;
-            this._fieldEl.oncontextmenu = null;
+            this._fieldEl.removeEventListener('click', this._onFieldLeftClick);
+            this._fieldEl.removeEventListener('contextmenu', this._onFieldRightClick);
+            this._fieldEl.removeEventListener('mousedown', this._onMouseDown.bind(this));
+            document.removeEventListener('mouseup', this._onMouseUp.bind(this));
         }
 
         /**
@@ -114,9 +128,58 @@ var Game = (function() {
                 this._gameModel.markCell(targetCell.parentNode.sectionRowIndex, targetCell.cellIndex);
             }
 
-            return false;
+            event.preventDefault();
         }
 
+        /**
+         * User presses mouse button
+         * @param event
+         * @private
+         */
+        _onMouseDown(event) {
+            let targetCell = this._getClickedCell(event);
+            let currentCell = this._currentClick.cell;
+
+            if (!targetCell || (currentCell && targetCell !== currentCell)) {
+                this._resetCurrentClick();
+                return;
+            }
+
+            this._currentClick.cell = targetCell;
+            switch (event.which) {
+                case 1:
+                    this._currentClick.left = true;
+                    break;
+                case 3:
+                    this._currentClick.right = true;
+                    break;
+            }
+
+            if (this._currentClick.left && this._currentClick.right) {
+                this._gameModel.highlightCell(targetCell.parentNode.sectionRowIndex, targetCell.cellIndex);
+            }
+        }
+
+        /**
+         * User releases mouse button
+         * @param event
+         * @private
+         */
+        _onMouseUp(event) {
+            let targetCell = this._getClickedCell(event);
+            let currentCell = this._currentClick.cell;
+            let twoButtonsDown = this._currentClick.left && this._currentClick.right;
+
+            if (targetCell && currentCell && targetCell == currentCell && twoButtonsDown) {
+                this._gameModel.openHighlighted();
+            }
+            this._gameModel.clearHighlight();
+            this._resetCurrentClick();
+        }
+
+        _resetCurrentClick(event) {
+            this._currentClick = {};
+        }
         /**
          * Check if the click is the first for this new game
          * @private
@@ -166,6 +229,23 @@ var Game = (function() {
             let cellEl = this._fieldEl.rows[cell.row].cells[cell.column];
 
             cellEl.classList.toggle(Classes.MARKED);
+        }
+        /**
+         * Handle cell highlight (highlight neighbours when two buttons pressed on the cell with number)
+         * @param {CustomEvent} event
+         * @private
+         */
+        _onCellHighlight(event) {
+            let cell = event.detail;
+            let cellEl = this._fieldEl.rows[cell.row].cells[cell.column];
+
+            cellEl.classList.add(Classes.HIGHLIGHT);
+        }
+        _onCellClearHighlight(event) {
+            let cell = event.detail;
+            let cellEl = this._fieldEl.rows[cell.row].cells[cell.column];
+
+            cellEl.classList.remove(Classes.HIGHLIGHT);
         }
 
         _onGameStateChange(event) {
