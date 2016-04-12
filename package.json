@@ -1,0 +1,30 @@
+{
+  "name": "js-minesweeper",
+  "version": "1.0.0",
+  "description": "Minesweer game project for JS course (http://learn.javascript.ru)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vfedoseev/js-minesweeper.git"
+  },
+  "author": "v.fedoseev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vfedoseev/js-minesweeper/issues"
+  },
+  "homepage": "https://github.com/vfedoseev/js-minesweeper#readme",
+  "devDependencies": {
+    "babel-core": "^6.7.4",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.7.4",
+    "babel-plugin-transform-runtime": "^6.6.0",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-runtime": "^6.6.1",
+    "handlebars": "^4.0.5",
+    "handlebars-loader": "^1.2.0",
+    "webpack": "^1.12.14"
+  }
+}

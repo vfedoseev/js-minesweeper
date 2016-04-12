@@ -1,10 +1,10 @@
 'use strict';
 
+let resultsTemplate = require('../templates/results-template.hbs');
 /**
  * Object representing the storage interface
  */
-var Results = (function() {
-    let template = _.template(document.getElementById('results-template').innerHTML);
+let Results = (function() {
     let storageName = '_minesweeper_data_';
 
     /**
@@ -51,7 +51,7 @@ var Results = (function() {
            return a.time - b.time;
         });
 
-        return template({
+        return resultsTemplate({
             results: results
         });
     }
@@ -61,3 +61,5 @@ var Results = (function() {
         render: _render
     }
 })();
+
+module.exports = Results;

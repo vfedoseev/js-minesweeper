@@ -1,0 +1,28 @@
+<div class="fixed-container">
+    <div class="fixed-container-inner">
+        <table class="table-fixed">
+            <thead>
+            <tr>
+                <th>
+                    <div class="th-fixed-inner">Rank</div>
+                </th>
+                <th>
+                    <div class="th-fixed-inner">Result (sec)</div>
+                </th>
+                <th>
+                    <div class="th-fixed-inner">Date</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each results}}
+            <tr {{#if current}}class="current"{{/if}}>
+            <td>{{ increment @index }}</td>
+            <td>{{ time }}</td>
+            <td>{{ date }}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

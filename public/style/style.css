@@ -126,10 +126,10 @@ html, body {
 }
 
 .cell-marked {
-    background-image: url(../assets/flag.png);
+    background-image: url(flag.png);
 }
 .cell-mine {
-    background-image: url(../assets/mine.png);
+    background-image: url(mine.png);
 }
 
 .cell-marked.cell-number,

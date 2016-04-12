@@ -1,17 +1,17 @@
 'use strict';
 
-const CellType = {
+exports.CellType = {
     EMPTY: 0,
     MINE: -1
 };
 
-const GameState = {
+exports.GameState = {
     START: 0,
     WIN: 1,
     LOST: 2
 };
 
-const Default = {
+exports.Default = {
     COLUMNS: 9,
     ROWS: 9,
     MINES: 10,
@@ -23,17 +23,17 @@ const Default = {
     MAX_MINES: 40
 };
 
-const Selectors = {
+exports.Selectors = {
     ROWS_INPUT: '[name="rows"]',
     COLUMNS_INPUT: '[name="columns"]',
     MINES_INPUT: '[name="mines"]',
     MINES_RANGE_TEXT: '[data-range="mines"]'
-}
+};
 
-const Classes = {
+exports.Classes = {
     EMPTY: 'cell-empty',
     MINE: 'cell-mine',
     NUMBER: 'cell-number',
     MARKED: 'cell-marked',
     HIGHLIGHT: 'cell-highlight'
-}
+};

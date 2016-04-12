@@ -1,5 +1,7 @@
 'use strict';
 
+let Dispatcher = require('./dispatcher');
+
 class Timer extends Dispatcher {
 
     start() {
@@ -31,3 +33,5 @@ class Timer extends Dispatcher {
         return this._current;
     }
 }
+
+module.exports = Timer

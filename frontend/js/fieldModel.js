@@ -1,5 +1,7 @@
 'use strict';
 
+let CellType = require('./constants').CellType;
+
 /**
  * Class representing a game field
  */
@@ -104,3 +106,5 @@ class FieldModel {
         return neighbours;
     }
 }
+
+module.exports = FieldModel;

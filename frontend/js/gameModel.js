@@ -1,5 +1,10 @@
 'use strict';
 
+let Dispatcher = require('./dispatcher');
+let FieldModel = require('./fieldModel');
+let GameState = require('./constants').GameState;
+let CellType = require('./constants').CellType;
+
 const DELIMITER = '-';
 /**
  * Class representing the game model
@@ -192,3 +197,5 @@ class GameModel extends Dispatcher {
         }
     }
 }
+
+module.exports = GameModel;

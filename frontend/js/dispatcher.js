@@ -39,3 +39,5 @@ class Dispatcher {
         this._el.dispatchEvent(event);
     }
 }
+
+module.exports = Dispatcher;
