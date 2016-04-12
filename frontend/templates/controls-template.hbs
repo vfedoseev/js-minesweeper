@@ -1,0 +1,20 @@
+<div class="controls-col">
+    <form name="options-form">
+        <label for="rows" class="controls-element">
+            <span class="control-name">Rows ({{ options.minRows }}-{{ options.maxRows }})</span>
+            <input type="number" name="rows" id="rows" class="control-input" value="{{ options.rows }}" min="{{ options.minRows }}" max="{{ options.maxRows }}">
+        </label>
+        <label for="columns" class="controls-element">
+            <span class="control-name">Columns ({{ options.minCols }}-{{ options.maxCols }})</span>
+            <input type="number" name="columns" id="columns" class="control-input" value="{{ options.cols }}" min="{{ options.minCols }}" max="{{ options.maxCols }}">
+        </label>
+        <label for="mines" class="controls-element">
+            <span class="control-name">Mines <span data-range = "mines">({{ options.minMines }}-{{ options.maxMines }})</span></span>
+            <input type="number" name="mines" id="mines" class="control-input" value="{{ options.mines }}" min="{{ options.minMines }}" max="{{ options.maxMines }}">
+        </label>
+    </form>
+</div>
+<div class="controls-col controls-col-right">
+    <span class="timer" data-content="timer">00:00</span>
+</div>
+<div class="start-btn" data-action="start">Start</div>

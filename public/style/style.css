@@ -1,0 +1,248 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    font: 14px Arial, Helvetica, sans-serif;
+    color: #333;
+}
+.wrapper {
+    display: block;
+    text-align: center;
+}
+.game-wrapper {
+    position: relative;
+    display: inline-block;
+    background: #2D95BF;
+    border: 3px solid #2D95BF;
+    text-align: left;
+}
+
+.controls-wrapper {
+    position: relative;
+    padding: 10px;
+    color: #f8f8f8;
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.4);
+}
+
+.controls-wrapper::after {
+    display: table;
+    content: '';
+    clear: both;
+}
+.controls-col {
+    display: inline-block;
+    vertical-align: middle;
+    width: 49%;
+}
+
+.controls-col-right {
+    text-align: right;
+}
+
+.controls-element {
+    position: relative;
+    margin: 0;
+    display: block;
+    padding-left: 90px;
+    line-height: 25px;
+}
+.control-name {
+    position: absolute;
+    width: 90px;
+    left: 0;
+    top: 0;
+    font-size: 12px;
+}
+.control-input {
+    width: 50px;
+    padding: 3px 5px;
+    background: #f8f8f8;
+    border: 1px solid #eee;
+}
+
+.start-btn {
+    position: absolute;
+    left: 60%;
+    top: 50%;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transform: translate(-50%,-50%);
+    background: #F15A5A;
+    color: #fff;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+/* Timer */
+.timer {
+    line-height: 24px;
+    font-size: 24px;
+}
+/* Game field styles */
+.field {
+    padding: 0;
+    margin: 0;
+    border-collapse: collapse;
+    font-weight: bold;
+}
+
+.cell {
+    position: relative;
+    padding: 3px;
+    margin: 0;
+    width: 40px;
+    height: 40px;
+    background: #ccc center center no-repeat;
+    box-shadow: inset 0 0 1px 1px rgba(64,64,64,0.2);
+    text-align: center;
+    cursor: pointer;
+}
+
+.cell::before {
+    position: absolute;
+    content: ' ';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    border: 2px solid #eee;
+    border-right-color: #aaa;
+    border-bottom-color: #aaa;
+}
+
+.cell:hover::before {
+    border-top-color: #aaa;
+    border-left-color: #aaa;
+    border-right-color: #eee;
+    border-bottom-color: #eee;
+}
+
+.cell-marked {
+    background-image: url(flag.png);
+}
+.cell-mine {
+    background-image: url(mine.png);
+}
+
+.cell-marked.cell-number,
+.cell-marked.cell-empty {
+    vertical-align: bottom;
+    text-align: right;
+    background-color: #F15A5A;
+}
+.cell-marked.cell-mine {
+    background-color: #4EBA6F;
+}
+
+.cell-number::before,
+.cell-mine::before,
+.cell-empty::before {
+    display: none;
+}
+
+.cell-highlight::before {
+    background-color: #999;
+}
+
+.cell-marked:hover::before {
+    border-top-color: #eee;
+    border-left-color: #eee;
+    border-right-color: #aaa;
+    border-bottom-color: #aaa;
+}
+
+/* Modal */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-inner {
+    position: absolute;
+    width: 300px;
+    max-height: 200px;
+    padding: 10px;
+    left: 50%;
+    top: 50%;
+    margin-top: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    background: #eee;
+    opacity: 1;
+    box-shadow: 0 0 3px 3px rgba(0,0,0,0.2);
+    transition: all .3s ease-out;
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 24px;
+    text-align: center;
+}
+.modal-content {
+    padding: 0;
+    margin: 0;
+}
+.modal-close {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 5px;
+    right: 5px;
+    border-radius: 5px;
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    background: #F15A5A;
+}
+.modal-close::before {
+    color: #fff;
+    content: '\00d7';
+}
+
+.js-modal-hidden .modal-inner {
+    margin-top: 10px;
+    opacity: 0;
+}
+
+/* Fixed table */
+.fixed-container {
+    position: relative;
+    padding-top: 30px;
+    height: 150px;
+    width: 100%;
+    overflow: hidden;
+}
+.fixed-container-inner {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.table-fixed {
+    width: 100%;
+    border: none;
+}
+.th-fixed-inner {
+    position: absolute;
+    top: 0;
+    line-height: 30px;
+}
+.table-fixed tr.current {
+    background: #bbb;
+}
+.table-fixed td {
+    width: 30%;
+}
+
+
